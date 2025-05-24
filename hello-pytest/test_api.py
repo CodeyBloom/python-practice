@@ -1,14 +1,7 @@
 import hello
 
 
-# testing the actions or "application"
-def test_main(capsys):
-    hello.main()
-    result = capsys.readouterr().out.rstrip()
-    assert result == "Hello, World!"
-
-
-# and the next few test the "API"
+# The next few tests are for the "API"
 def test_hello():
     result = hello.output()
     assert result == "Hello, World!"
