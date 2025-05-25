@@ -8,6 +8,7 @@ def test_hello():
     assert result == "Hello, World!"
 
 
+@pytest.mark.smoke
 def test_hello_comma():
     result = hello.output()
     assert "," in result
@@ -29,7 +30,9 @@ def test_hello_ends_with():
         ("--greeting Goodbye", "Goodbye, World!"),
         ("-n Pytest", "Hello, Pytest!"),
         ("--name Pytest", "Hello, Pytest!"),
-        ("-g Goodbye -n Pytest", "Goodbye, Pytest!"),
+        pytest.param(
+            "-g Goodbye -n Pytest", "Goodbye, Pytest!", marks=pytest.mark.smoke
+        ),
     ],
     ids=lambda x: f'"{x}"',
 )
