@@ -1,4 +1,5 @@
 import hello
+import pytest
 
 
 # The next few tests are for the "API"
@@ -20,18 +21,26 @@ def test_hello_ends_with():
 # testing the parameters/args
 
 
-def test_greeting():
-    result = hello.output("-g Goodbye")
-    assert result == "Goodbye, World!"
+# this one combines all the following int a single test, its very useful
+@pytest.mark.parametrize(
+    "arg_str, expected",
+    [
+        ("-g Goodbye", "Goodbye, World!"),
+        ("--greeting Goodbye", "Goodbye, World!"),
+        ("-n Pytest", "Hello, Pytest!"),
+        ("--name Pytest", "Hello, Pytest!"),
+        ("-g Goodbye -n Pytest", "Goodbye, Pytest!"),
+    ],
+    ids=lambda x: f'"{x}"',
+)
+def test_output(arg_str, expected):
+    result = hello.output(arg_str)
+    assert result == expected
 
 
-def test_long_greeting():
-    result = hello.output("--greeting Goodbye")
-    assert result == "Goodbye, World!"
-
-
-def test_name():
-    result = hello.output("-n Pytest")
+@pytest.mark.parametrize("arg_str", ["-n Pytest", "--name Pytest"])
+def test_name(arg_str):
+    result = hello.output(arg_str)
     assert result == "Hello, Pytest!"
 
 
